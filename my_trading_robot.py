@@ -57,9 +57,11 @@ def handle_data(context, data):
 
 
     # Here is the meat of our strategy.
-    # If the current price is 5% above the average price of 30 10-min bars 
-    # AND we have enough cash, then we will order.
-    # If the current price is below the average price, 
+    # If the average price of 5 10-min bars starts to increase to 
+    # above the average price of 30 10-min bars 
+    # AND we have enough cash, then we will place a long order.
+    # If the average price of 5 10-min bars starts to drop to 
+    # below the average price of 30 10-min bars 
     # then we want to close our position to 0 shares.
     if mv_5_n1 > mv_30_n1 and mv_5_n2 < mv_30_n2:
 
