@@ -8,10 +8,10 @@ import os
 import datetime
 import pytz
 
-NOTSET = 0
+NOTSET = 0 # show more info
 DEBUG = 10
 INFO = 20
-ERROR = 30
+ERROR = 30 # show less info
 
 class SimpleLoggerClass(object):
     def __init__(self, filename, logLevel):
@@ -24,15 +24,14 @@ class SimpleLoggerClass(object):
             self.USeasternTimeZone = None
             
         self.filename = filename
-        if not os.path.exists('Log'):
-            os.makedirs('Log')
-        self._log_file = open('Log/' + filename, 'w')
         self._logLevel = logLevel # 
         
     def _write_to_log(self, msg):
         currentTime = datetime.datetime.now(tz = self.USeasternTimeZone)
         print msg
-        self._log_file.write(str(currentTime) + ": " + msg + '\n')        
+        self.open_file()
+        self._log_file.write(str(currentTime) + ": " + msg + '\n')
+        self.close_log()        
 
     def debug(self, msg):
         if (self._logLevel <= DEBUG):
@@ -48,3 +47,18 @@ class SimpleLoggerClass(object):
         
     def close_log(self):
         self._log_file.close()
+    
+    def open_file(self):
+        if not os.path.exists('Log'):
+            os.makedirs('Log')
+        self._log_file = open('Log/' + self.filename, 'a')        
+
+if __name__=='__main__':
+    print os.path
+    c=  SimpleLoggerClass('TestLog.txt',0) 
+    c.info('test test') 
+    c.info('test 1') 
+    c.info('test 2') 
+    c.info('test 3') 
+    c.info('test 4') 
+    
