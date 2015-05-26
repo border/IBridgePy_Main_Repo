@@ -111,7 +111,7 @@ class BarTrader(IBAccountManager):
                 if self.req_hist_price_check_end(): 
                     # After receive the new hist, combine them with the old hist
                     for req_id in self.returned_hist:
-                        #print self.returned_hist[req_id].hist                      
+                        print self.returned_hist[req_id].hist                      
                         for security in self.data:
                             if same_security(security, self.returned_hist[req_id].security):
                                 temp=self.data[security].hist[self.returned_hist[req_id].period]
@@ -121,21 +121,21 @@ class BarTrader(IBAccountManager):
                                         empty=empty.append(temp.loc[index])
                                 self.data[security].hist[self.returned_hist[req_id].period]=empty.append(self.returned_hist[req_id].hist)        
                                 #print empty
-                                #print self.returned_hist[req_id].hist
-                                #print self.data[security].hist[self.returned_hist[req_id].period]
+                                print self.returned_hist[req_id].hist
+                                print self.data[security].hist[self.returned_hist[req_id].period]
                                         #self.data[security].hist[self.returned_hist[req_id].period]= \
                                         #temp.append(self.returned_hist[req_id].hist.loc[index])
                     for security in self.data:
                         for period in self.context.hist_frame:
                             if len(self.data[security].hist[period])>300:
                                 self.data[security].hist[period]=self.data[security].hist[period][-300:]
-                            #print self.data[security].hist[period]
+                            print self.data[security].hist[period]
                     self.accountManagerState.set_state(self.accountManagerState.EVERY_BAR_RUN)
                     
 
                     # Run handle_data regularly
                     handle_data(self.context, self.data)
-                    #print self.stime
+                    print self.stime
 
         self.stime_previous=self.stime        
                 
@@ -144,8 +144,8 @@ if __name__ == "__main__":
     settings = pd.read_csv('settings.csv')
     
     trader = BarTrader()
-    trader.setup(PROGRAM_DEBUG = False, accountCode = settings['AccountCode'][0], 
-                 logLevel = simpleLogger.ERROR)
+    trader.setup(PROGRAM_DEBUG = True, accountCode = settings['AccountCode'][0], 
+                 logLevel = simpleLogger.DEBUG)
     ########## API
     order_with_SL_TP = trader.order_with_SL_TP
     log = trader.log

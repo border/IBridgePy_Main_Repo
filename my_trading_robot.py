@@ -20,7 +20,9 @@ def initialize(context):
     # so that we specifiy them in initialize function
 
     context.security=symbol('CASH.EUR.USD')
+    #context.securities=symbols('CASH.EUR.USD', 'CASH.AUD.USD')
     #context.security=symbol('STK.AAPL.USD')
+    #context.security=symbols('STK.AAPL.USD', 'STK.FB.USD')
     context.hist_frame=['1 min']
 
 # The handle_data function is where the real work is done.  
@@ -69,12 +71,14 @@ def handle_data(context, data):
         number_of_shares = int(cash/current_price)
 
         # Place the buy order (positive means buy, negative means sell)
-        order(context.security, +number_of_shares)
+        #order(context.security, +number_of_shares)
+        print 'Buy ' + context.security + ' ' + number_of_shares + '@' + current_price
 
     elif mv_5_n1<mv_30_n1 and mv_5_n2 > mv_30_n2:
         
         # Sell all of our shares by setting the target position to zero
-        order_target(context.security, 0)
+        #order_target(context.security, 0)
+        print 'Sell all stock @' + current_price
 
 
 

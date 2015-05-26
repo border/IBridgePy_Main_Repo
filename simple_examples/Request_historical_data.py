@@ -28,9 +28,11 @@ def create_contract(security):
         contract.exchange = 'SMART'
         contract.currency = 'USD'
         contract.primaryExchange='SMART'
+        print 'Debug: ' + contract.symbol + ', secType: ' + contract.secType + ', exchange: ' + contract.exchange
     return contract 
 
 class MyClient(IBCpp.IBClient) :    
+
     def setup(self):
         self.symbol='STK.AAPL'
 #        self.symbol='CASH.EUR.USD'
@@ -42,6 +44,7 @@ class MyClient(IBCpp.IBClient) :
         self.currentHistSymbol = ""
         self.stime=None
         self.state='first'
+        self.useRTH = 0
         
     def error(self, errorId, errorCode, errorString):
         print 'errorId = ' + str(errorId), 'errorCode = ' + str(errorCode)
@@ -51,11 +54,11 @@ class MyClient(IBCpp.IBClient) :
         self.currentHistSymbol = contract.symbol+contract.currency
         if contract.secType=='STK' or contract.secType=='FUT':
             self.reqHistoricalData(0, contract, endDateTime , 
-                                   durationStr, barSizeSetting, 'TRADES', 1, 1)
+                                   durationStr, barSizeSetting, 'TRADES', self.useRTH, 1)
 
         if contract.secType=='CASH':
             self.reqHistoricalData(0, contract, endDateTime , 
-                                   durationStr, barSizeSetting, 'BID', 1, 1)
+                                   durationStr, barSizeSetting, 'BID', self.useRTH, 1)
         print 'Request historical data', self.stime
         self.request_hist_data_status='Submitted'
         
@@ -98,7 +101,7 @@ class MyClient(IBCpp.IBClient) :
         if self.state=='first':
             if self.stime!=None:
                 req = datetime.datetime.strftime(self.stime,"%Y%m%d %H:%M:%S") #datatime -> string                print dt_stime                
-                c.request_hist_data(create_contract(self.symbol), req, '1 W', '1 day')
+                c.rcontract.exchangeequest_hist_data(create_contract(self.symbol), req, '1 W', '1 day')
                 self.state='second'
         if self.state=='second':
             if self.request_hist_data_status=='Done':
