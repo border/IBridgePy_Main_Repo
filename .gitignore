@@ -48,3 +48,6 @@ Temporary Items
 # Python
 *.pyc
 *.pyd
+
+Log/
+tags
